@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+  <h1>Vue Spielplatz</h1>
+
+  <!-- Counter -->
+  <div id="counter">
+    Counter: {{ counter }}
+  </div>
+
+  <script>
+    const Counter = {
+      data() {
+        return {
+          counter: 0
+        }
+      },
+      mounted() {
+        setInterval(() => {
+          this.counter++
+        }, 100)
+      }
+    }
+
+    Vue.createApp(Counter).mount('#counter')
+  </script>
+
+  <!-- Attribute Binding -->
+  <div id="bind-attribute">
+    <span v-bind:title="message">
+      Hover your mouse over me for a few seconds to see my dynamically bound title!
+    </span>
+  </div>
+
+  <script>
+    const AttributeBinding = {
+      data() {
+        return {
+          message: 'You loaded this page on ' + new Date().toLocaleString()
+        }
+      }
+    }
+
+    Vue.createApp(AttributeBinding).mount('#bind-attribute')
+  </script>
+
+  <!-- Event Handling -->
+  <div id="event-handling">
+    <p>{{ message }}</p>
+    <button v-on:click="reverseMessage">Reverse Message</button>
+  </div>
+
+  <script>
+    const EventHandling = {
+      data() {
+        return {
+          message: 'Hello Vue.js!'
+        }
+      },
+      methods: {
+        reverseMessage() {
+          this.message = this.message
+            .split('')
+            .reverse()
+            .join('')
+        }
+      }
+    }
+
+    Vue.createApp(EventHandling).mount('#event-handling')
+  </script>
+
+  <!-- Two-Way-Binding -->
+  <div id="two-way-binding">
+    <p>{{ message }}</p>
+    <input type="text" v-model="message">
+  </div>
+</body>
+
+<script>
+  const TwoWayBinding = {
+    data() {
+      return {
+        message: 'Hello Vue!'
+      }
+    }
+  }
+
+  Vue.createApp(TwoWayBinding).mount('#two-way-binding')
+</script>
+
+<!-- Conditionals -->
+<div id="conditional-rendering">
+  <span v-if="visible">Now you see me</span>
+  <button v-on:click="toggleVisibility">Toggle Visibility</button>
+</div>
+
+<script>
+  const ConditionalRendering = {
+    data() {
+      return {
+        visible: false
+      }
+    },
+    methods: {
+      toggleVisibility() {
+        this.visible = !this.visible
+      }
+    }
+  }
+  Vue.createApp(ConditionalRendering).mount('#conditional-rendering')
+</script>
+
+<!-- v-For -->
+<div id="list-rendering">
+  <ul>
+    <li v-for="todo in todos">
+      {{ todo.id }} - {{ todo.text }}
+    </li>
+  </ul>
+</div>
+
+<script>
+  const ListRendering = {
+    data() {
+      return {
+        todos: [
+          {
+            id: 1,
+            text: "Mir"
+          },
+          {
+            id: 2,
+            text: "Fällt"
+          },
+          {
+            id: 3,
+            text: "Nichts"
+          },
+          {
+            id: 4,
+            text: "Ein"
+          },
+        ]
+      }
+    }
+  }
+
+  Vue.createApp(ListRendering).mount('#list-rendering')
+</script>
+
+<!-- Components -->
+<div id="components">
+  <ol>
+    <todo-item 
+      v-for="item in groceryList" 
+      v-bind:todo="item" 
+      v-bind:key="item.id">
+    </todo-item>
+  </ol>
+</div>
+
+<script>
+  const TodoList = {
+    data() {
+      return {
+        groceryList: [
+        { id: 0, text: 'Vegetables' },
+        { id: 1, text: 'Cheese' },
+        { id: 2, text: 'Whatever else humans are supposed to eat' }
+        ]
+      }
+    }
+  }
+
+  const app = Vue.createApp(TodoList)
+
+  app.component('todo-item', {
+    props: ['todo'],
+    template: `<li>{{ todo.text }}</li>`
+  })
+
+  const vm = app.mount('#components')
+</script>
+</html>
+
+
